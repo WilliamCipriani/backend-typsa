@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 
-const port = process.env.PORT || 3031;
+const port = process.env.PORT || 3030;
 
 //Creamos una instancia de Express
 var app = express();
