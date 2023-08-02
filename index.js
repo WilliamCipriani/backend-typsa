@@ -191,13 +191,17 @@ const sendEmail = async (data) => {
       const mailOptions = {
         from: 'typsa_reservas@gmail.com',
         to: 'wjcipriani@typsa.es',
-        subject: 'Nuevo envío de formulario',
+        subject: 'TYPSA-WEB CONTACTO',
         text: `
-          Nombre: ${name}
-          Email: ${email}
-          Teléfono: ${phone}
-          Empresa: ${company}
-          Mensaje: ${message}
+          <p>Se ha recibido un nuevo mensaje a través del formulario de contacto. Los detalles son los siguientes: </p>
+          <ul>
+            <li><strong>Nombre: </strong> ${name}</li>
+            <li><strong>Email: </strong> ${email}</li>
+            <li><strong>Teléfono </strong> ${phone}</li>
+            <li><strong>Empresa: </strong> ${company}</li>
+          </ul>
+          <p><strong>Mensaje:</strong></p>
+          <p> ${message}</p>
         `,
       };
   
