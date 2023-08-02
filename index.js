@@ -190,7 +190,7 @@ const sendEmail = async (data) => {
       // Envía el correo electrónico
       const mailOptions = {
         from: 'typsa_reservas@gmail.com',
-        to: 'wjcipriani@typsa.es',
+        to: 'rhperu@typsa.es',
         subject: 'TYPSA-WEB CONTACTO',
         html: `
           <p>Se ha recibido un nuevo mensaje a través del formulario de contacto. Los detalles son los siguientes: </p>
