@@ -178,7 +178,18 @@ const sendEmail = async (data) => {
   
   app.post('/api/contact', async (req, res) => {
     try {
-      const { name, email, phone, company, message } = req.body;
+      const { name, email, phone, company, message, option } = req.body;
+
+    let toEmail;
+
+    // Define el correo electrónico al que enviar el formulario según la opción seleccionada
+    if (option === 'Envio de CV') {
+      toEmail = 'mjleiva@typsa.es';
+    } else if (option === 'Ofertas') {
+      toEmail = 'gavelasquez@typsa.es';
+    } else {
+      toEmail = 'wjcipriani@typsa.es'; // correo por defecto si ninguna opción coincide
+    }
   
       // Realiza cualquier validación adicional de los datos del formulario si es necesario
         console.log('Name:', name);
@@ -186,12 +197,12 @@ const sendEmail = async (data) => {
         console.log('Phone:', phone);
         console.log('Company:', company);
         console.log('Message:', message);
-  
+        console.log('Option:', option);
       // Envía el correo electrónico
       const mailOptions = {
         from: 'typsa_reservas@gmail.com',
-        to: 'rhperu@typsa.es',
-        subject: 'TYPSA-WEB CONTACTO',
+        to: toEmail,
+        subject: `${option}`,
         html: `
           <p>Se ha recibido un nuevo mensaje a través del formulario de contacto. Los detalles son los siguientes: </p>
           <ul>
@@ -236,6 +247,37 @@ const contactFormController = async (req, res) => {
       res.status(500).json({ message: 'Error al procesar el formulario de contacto' });
     }
   };
+
+
+//FORMULARIO LABORATORIO:
+const NEW_EMAIL_RECIPIENT = 'labperu@typsa.es';
+
+app.post('/api/contact-new', async (req, res) => {
+  try {
+      const { name, email, asunto, message } = req.body;
+      const mailOptions = {
+          from: 'typsa_reservas@gmail.com',
+          to: NEW_EMAIL_RECIPIENT,
+          subject: `${asunto}`,
+          html: `
+              <p>Se ha recibido un nuevo mensaje a través del formulario de contacto. Los detalles son los siguientes: </p>
+              <ul>
+                  <li><strong>Nombre: </strong> ${name}</li>
+                  <li><strong>Email: </strong> ${email}</li>
+              </ul>
+              <p><strong>Mensaje:</strong></p>
+              <p> ${message}</p>
+          `,
+      };
+      await transporter.sendMail(mailOptions);
+      console.log('Correo electrónico enviado correctamente');
+      res.status(200).json({ message: 'Correo electrónico enviado correctamente' });
+  } catch (error) {
+      console.error('Error al procesar el formulario de contacto:', error);
+      res.status(500).json({ message: 'Error al procesar el formulario de contacto' });
+  }
+});
+
 
 
 app.listen(port, function() {
