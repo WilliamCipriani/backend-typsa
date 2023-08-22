@@ -183,10 +183,10 @@ const sendEmail = async (data) => {
     let toEmail;
 
     // Define el correo electrónico al que enviar el formulario según la opción seleccionada
-    if (option === 'Ofertas') {
-      toEmail = 'typsaperu@typsa.com';
+    if (option === 'Consultas') {
+      toEmail = 'rhperu@typsa.es, crcavero@typsa.es';
     } else {
-      toEmail = 'rhperu@typsa.es'; // correo por defecto si ninguna opción coincide
+      toEmail = 'rhperu@typsa.es, typsaperu@typsa.com'; // correo por defecto si ninguna opción coincide
     }
   
       // Realiza cualquier validación adicional de los datos del formulario si es necesario
