@@ -1,14 +1,17 @@
 //Importamos los modulos necesarios
 const cors = require("cors");
 const express = require('express');
-//const mysql = require('mysql');
+const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const multer  = require('multer');
 
 //JSON
 const fs = require('fs');
 const path = require('path');
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const port = process.env.PORT || 3040;
 
@@ -30,14 +33,12 @@ const usuarios = JSON.parse(usuariosData);
 
 
 //Conectamos a la base de datos MySQL
-/*const connection = mysql.createConnection ({
-  host:'localhost',
+const connection = mysql.createConnection ({
+  host:'127.0.0.1',
   user:'root',
   password:'',
-  database:'typsa_web'
+  database:'typsa'
 });
-
-*/
 
 // Configura el transporte de correo
 const transporter = nodemailer.createTransport({
@@ -184,9 +185,11 @@ const sendEmail = async (data) => {
 
     // Define el correo electrónico al que enviar el formulario según la opción seleccionada
     if (option === 'Consultas') {
-      toEmail = 'rhperu@typsa.es, crcavero@typsa.es';
+        toEmail = 'wjcipriani@typsa.es';
+      //toEmail = 'rhperu@typsa.es';
     } else {
-      toEmail = 'rhperu@typsa.es, typsaperu@typsa.com'; // correo por defecto si ninguna opción coincide
+        toEmail = 'wciprianinaveda@gmail.com';
+      //toEmail = 'rhperu@typsa.es, typsaperu@typsa.com'; // correo por defecto si ninguna opción coincide
     }
   
       // Realiza cualquier validación adicional de los datos del formulario si es necesario
@@ -274,6 +277,56 @@ app.post('/api/contact-new', async (req, res) => {
       console.error('Error al procesar el formulario de contacto:', error);
       res.status(500).json({ message: 'Error al procesar el formulario de contacto' });
   }
+});
+
+
+app.post('/api/upload', upload.single('file'), async (req, res) => {
+  const file = req.file;
+  const name = req.body.name;
+  const email = req.body.email;
+  const dni = req.body.dni;
+  const telefono = req.body.telefono;
+  const provincia = req.body.provincia;
+  const especialidad = req.body.especialidad;
+  const message = req.body.message;
+  
+  // Configura y envía el correo electrónico usando nodemailer
+  let transporter = nodemailer.createTransport({
+      // Configuración del transporte (ejemplo con Gmail)
+      service: 'gmail',
+      auth: {
+        user: 'typsa.reserva@gmail.com',
+        pass: 'krqpyqyixcajmjxf',
+      }
+  });
+
+  let mailOptions = {
+      from: 'typsa.reserva@gmail.com',
+      to: 'wciprianinaveda@gmail.com',
+      subject: 'Nuevo CV de ' + name,
+      text: `
+      El usuario ${name} con email ${email} ha enviado su CV.
+      DNI: ${dni}
+      Teléfono: ${telefono}
+      Provincia: ${provincia}
+      Especialidad: ${especialidad}
+      Mensaje:
+      ${message}
+    `,
+      attachments: [{
+          filename: file.originalname,
+          content: file.buffer
+      }]
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error al enviar el correo", error: error.message });
+    } else {
+        res.status(200).json({ message: "Correo enviado" });
+    }
+  });
 });
 
 
