@@ -302,7 +302,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
   let mailOptions = {
       from: 'typsa.reserva@gmail.com',
-      to: 'wciprianinaveda@gmail.com',
+      to: 'rhperu@typsa.es',
       subject: 'Nuevo CV de ' + name,
       text: `
       El usuario ${name} con email ${email} ha enviado su CV.
