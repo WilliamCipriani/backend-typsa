@@ -329,8 +329,6 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   });
 });
 
-
-
 app.listen(port, function() {
     console.log(`Server started on port ${port}`);
 })
