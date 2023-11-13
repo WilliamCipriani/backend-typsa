@@ -1,10 +1,14 @@
 //Importamos los modulos necesarios
 const cors = require("cors");
 const express = require('express');
+const downloadRoutes = require('./downloadRoutes');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const multer  = require('multer');
+
+
+
 
 //JSON
 const fs = require('fs');
@@ -26,7 +30,7 @@ app.use(express.urlencoded({
     extended:true,
 }));
 
-
+app.use(downloadRoutes);
 const usuariosFilePath = path.join(__dirname, 'usuarios.json');
 const usuariosData = fs.readFileSync(usuariosFilePath);
 const usuarios = JSON.parse(usuariosData);
@@ -302,7 +306,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
   let mailOptions = {
       from: 'typsa.reserva@gmail.com',
-      to: 'rhperu@typsa.es',
+      to: 'wjcipriani@typsa.es',
       subject: 'Nuevo CV de ' + name,
       text: `
       El usuario ${name} con email ${email} ha enviado su CV.
