@@ -157,7 +157,7 @@ const sendEmail = async (data) => {
     try {
         const mailOptions = {
             from: 'typsa_reservas@gmail.com',
-            to: 'wjcipriani@typsa.es',
+            to: 'rhperu@typsa.es',
             subject: 'Nuevo envío de formulario',
             text: `
               Nombre: ${data.name}
@@ -189,11 +189,11 @@ const sendEmail = async (data) => {
 
     // Define el correo electrónico al que enviar el formulario según la opción seleccionada
     if (option === 'Consultas') {
-        toEmail = 'wjcipriani@typsa.es';
-      //toEmail = 'rhperu@typsa.es';
+       // toEmail = 'wjcipriani@typsa.es';
+          toEmail = 'rhperu@typsa.es';
     } else {
-        toEmail = 'wciprianinaveda@gmail.com';
-      //toEmail = 'rhperu@typsa.es, typsaperu@typsa.com'; // correo por defecto si ninguna opción coincide
+        //toEmail = 'wciprianinaveda@gmail.com';
+          toEmail = 'rhperu@typsa.es, typsaperu@typsa.com'; // correo por defecto si ninguna opción coincide
     }
   
       // Realiza cualquier validación adicional de los datos del formulario si es necesario
@@ -306,7 +306,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
   let mailOptions = {
       from: 'typsa.reserva@gmail.com',
-      to: 'wjcipriani@typsa.es',
+      to: 'rhperu@typsa.es',
       subject: 'Nuevo CV de ' + name,
       text: `
       El usuario ${name} con email ${email} ha enviado su CV.
