@@ -8,8 +8,6 @@ const nodemailer = require('nodemailer');
 const multer  = require('multer');
 
 
-
-
 //JSON
 const fs = require('fs');
 const path = require('path');
@@ -19,8 +17,15 @@ const upload = multer({ storage: storage });
 
 const port = process.env.PORT || 3040;
 
+//Conexion a la base de datos MongoDB
+const mongoose = require('mongoose')
+mongoose.connect('mongodb://localhost:27017/test02', )
+  .then(() => console.log('Base de datos Mongo conectada'))
+  .catch(e => console.log(e))
+
 //Creamos una instancia de Express
 var app = express();
+
 
 //Configuramos el middleware para parsear JSON
 app.use(bodyParser.json());
@@ -44,6 +49,8 @@ const connection = mysql.createConnection ({
   database:'typsa'
 });
 
+
+
 // Configura el transporte de correo
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -54,32 +61,6 @@ const transporter = nodemailer.createTransport({
       pass: 'krqpyqyixcajmjxf',
     },
   });
-
-
-//Definimos una funcion para ejecutar consultas SQL
-/*connection.connect(function(err){
-    if(err){
-        return console.error('error : '+ err.message);
-    }
-
-    console.log('Connected as id ' + connection.threadId);
-    
-});
-*/
-
-
-
-//Definimos una ruta para obtener todos los usuarios
-/*
-app.get('/usuarios', function (req, res) { 
-   try {
-        const usuarios =  connection.query('SELECT * FROM usuarios');
-        res.json(usuarios);
-   } catch (error) {
-        res.status(500).json({mensaje:' ERROR AL OBTENER LOS USUARIOS', error});
-   }
-});
-*/
 
 
 app.get('/usuarios', function (req, res) { 
@@ -99,42 +80,6 @@ app.get('/', function(req, res) {
   res.send('¡La aplicación está funcionando correctamente!');
 });
 
-/*
-
-app.post('/auth', function(req, res) {
-	
-	let username = req.body.username;
-	let password = req.body.password;
-    
-	
-	if (username && password) {
-		
-		connection.query('SELECT * FROM usuarios WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-			
-			if (error) throw error;
-			
-			if (results.length > 0) {
-				
-				res.json({
-                    ok:true,
-                    msj: 'Inicio session',
-                    id:results[0].id
-                })
-				
-			} else {
-				res.send({
-                    msj: 'Usuario y/o Contraseña Incorrecta'
-                });
-			}			
-			res.end();
-		});
-	} else {
-		res.send('Por favor ingresa Usuario y Contraseña!');
-		res.end();
-	}
-});
-*/
-
 // USA ELL USUARIOS.JSON PARA LEGEARSE
 app.post('/auth', function(req, res) {
   const { username, password } = req.body;
@@ -150,8 +95,6 @@ app.post('/auth', function(req, res) {
     res.status(400).json({ msj: 'Por favor ingresa Usuario y Contraseña!' });
   }
 });
-
-
 
 const sendEmail = async (data) => {
     try {
