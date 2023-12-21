@@ -4,7 +4,7 @@ const path = require('path');
 
 router.get('/descargar-pdf/:nombreArchivo', (req, res) => {
     const nombreArchivo = req.params.nombreArchivo;
-    const ubicacionArchivo = path.join(__dirname, 'downloads', nombreArchivo);
+    const ubicacionArchivo = path.join(__dirname,'..', 'downloads', nombreArchivo);
 
     res.download(ubicacionArchivo, nombreArchivo, (err) => {
         if (err) {
